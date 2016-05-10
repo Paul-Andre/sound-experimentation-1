@@ -1,0 +1,3 @@
+obj/waveforms.o: src/waveforms.c src/waveforms.h
+obj/keyboardMap.o: src/keyboardMap.c src/keyboardMap.h
+obj/main.o: src/main.c src/waveforms.h src/keyboardMap.h
