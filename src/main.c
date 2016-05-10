@@ -95,76 +95,33 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
 				}
 				if(internalNote->on){
 					InternalNote *internalNote=&(data->internalNotes[j]);
-					internalNote->phase+=internalNote->phaseDelta
-					* (1+sineFunction(internalNote->lfoPhase)*0.005);
+					internalNote->phase+=internalNote->phaseDelta;
+					//* (1+sineFunction(internalNote->lfoPhase)*0.005);
 					internalNote->lfoPhase+=INV_SAMPLE_RATE*5;
 					//while(internalNote->phase>=1.) internalNote->phase-=1.;
 
 					// Nice kinda like piano sound
-					float a = (sawFunction(
-							internalNote->phase+
-							
-								sineFunction(internalNote->phase)
-								
-								 //*internalNote->ring
-								)
-							)
-							*sawFunction(internalNote->phase);//*internalNote->ring;
-					a *= 0.3*internalNote->volume;
- 		
-					internalNote->ring*=0.9999;
 					//internalNote->volume*=0.99995;
 
 					
 
-					// Bass sound
-					/*
-					float r = internalNote->ring;
-					float p = internalNote->phase;
-					float a = (0
-							
-							+sineFunction(
-						p
-						+sineFunction(p)*r
-						//sineFunction(sineFunction(p))
-						//sineFunction(sineFunction(sineFunction(p)))*r*r
-
-							)
-							+sineFunction(sineFunction(p))*r
-							)
-							*0.2*internalNote->volume ;
-					internalNote->ring*=0.9999;
-					internalNote->volume*=0.99995;
-					*/
-
 					
 					// Bass sound
-					/*
 					float r = internalNote->ring;
 					float p = internalNote->phase;
 					float a = (0
 							
 							+sineFunction(
-						sineFunction(p)*r
+						squareFunction(p)*r
 						+p
 
 						)
 							)
 
 							*0.4*internalNote->volume ;
-					//internalNote->ring*=0.9999;
-					internalNote->volume*=0.99995;
-					*/
-/*
-						double p = internalNote->phase;
-					//float a = triangleFunction(p+(1+0.001*sineFunction(internalNote->framesPassed*INV_SAMPLE_RATE)))*0.3*internalNote->volume;
-
-					float a = triangleFunction(p)
-						+sineFunction(p*.5);
 					
-					a*=0.15*internalNote->volume;
-					//float a = sineFunction(sawFunction(p*.5))*0.3*internalNote->volume;
-*/
+					a*=0.3*internalNote->volume;
+					internalNote->ring*=0.9999;
 
 
 
@@ -222,10 +179,10 @@ int main(void)
     
     float octave = 1;
 		float fifth = 
-		//7./12.   //12edo
+		7./12.   //12edo
 		//log2(3./2.) //pythagorean
 		//log2(5.)/4. //quarter-comma meantone
-		13./22.
+		//13./22.
 		//10./17.
 		//9./15.
 		//11./19.
@@ -289,7 +246,7 @@ int main(void)
 							note->keyPressed=optKey.position;
 							note->on=1;
 							note->frequency=exp2((note->keyPressed.x-5)*leftStep
-									+(note->keyPressed.y-1)*upStep)*440;
+									+(note->keyPressed.y-1)*upStep)*110;
 							note->volume=1;
 							internalNote->lfoPhase=0;
 							internalNote->phase=0;
