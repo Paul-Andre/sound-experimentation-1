@@ -24,6 +24,8 @@ LDFLAGS = -lSDL2 -lportaudio -lm
 
 ifdef DEBUG
 	COMMONFLAGS := $(COMMONFLAGS) -g
+else
+	COMMONFLAGS := $(COMMONFLAGS) -O2
 endif
 CFLAGS = $(COMMONFLAGS) --std=gnu99
 CXXFLAGS = $(COMMONFLAGS) --std=gnu++0x

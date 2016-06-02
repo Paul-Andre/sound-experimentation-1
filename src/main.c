@@ -88,7 +88,7 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
 				Note *note=&(data->notes[j]);
 				InternalNote *internalNote=&(data->internalNotes[j]);
 				if(!note->on){
-					internalNote->volume*=0.9998;
+					internalNote->volume*=0.9999;
 					if(internalNote->volume<=0.00001){
 						internalNote->on=0;
 					}
@@ -97,38 +97,32 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
 					InternalNote *internalNote=&(data->internalNotes[j]);
 					internalNote->phase+=internalNote->phaseDelta;
 					//* (1+sineFunction(internalNote->lfoPhase)*0.005);
-					internalNote->lfoPhase+=INV_SAMPLE_RATE*5;
+					internalNote->lfoPhase+=INV_SAMPLE_RATE;
 					//while(internalNote->phase>=1.) internalNote->phase-=1.;
 
-					// Nice kinda like piano sound
 					//internalNote->volume*=0.99995;
 
 					
 
 					
 					// Bass sound
-					float r = internalNote->ring;
+					float r = (sineFunction(internalNote->lfoPhase))*0.1+0.9;//internalNote->ring;
 					float p = internalNote->phase;
 					float a = (0
 							
 							+sineFunction(
-						squareFunction(p)*r
-						+p
-
-						)
+								squareFunction(p)*r
+								+p
 							)
+						//*squareFunction(sineFunction(p)*r)
+						)
 
-							*0.4*internalNote->volume ;
+							*0.2*internalNote->volume ;
 					
-					a*=0.3*internalNote->volume;
-					internalNote->ring*=0.9999;
-
-
-
+					//a*=0.3*internalNote->volume;
+					//internalNote->ring*=0.9999;
 
 					internalNote->framesPassed++;
-					
-
 
 					sumL+=a;
 					sumR+=a;
@@ -178,20 +172,55 @@ int main(void)
 		data.unusedNotePointer=0;
     
     float octave = 1;
-		float fifth = 
-		7./12.   //12edo
+		double fifth = 
+		//7./12.   //12edo
+
 		//log2(3./2.) //pythagorean
+		//31./53.   //practically the same thing
+
+
 		//log2(5.)/4. //quarter-comma meantone
+
+		
+		//log2(10./6.*2)/3. //minor third = 6/5 third-comma meantone
+		//11./19.  //practically the same thing
+		
+
+		//log2(12./7.*2)/3. //minor third = 7/5 , kinda like 22edo
 		//13./22.
+
+		710.291/1200.
+
+		//log2(8.*7.)/10. //septimal meantone with Aug6 = 7/4
+		//log2(8.*7./5.)/6. //septimal meantone with Aug4 = 7/5
+		//log2(32.*7./6.)/9. //septimal meantone with dim2 = 7/6
+		
+		//18./31.  // 31 is pretty much in the same spirit (not all notes are covered)
+
+
+		//4./7.
+		//log2(5./3.*2)/3. //some kind of 7edo meantone temperament
+		//log2(11./9.*4)/4. //some kind of 7edo meantone temperament
+		//log2(11./6.*4)/5. //some kind of 7edo meantone temperament
+		//log2(9./5.*4)/5. //some kind of 7edo meantone temperament
+
+
+		//0.6 //5edo
+		//log2(7./2.)/3. 
+		//log2(9./5.*2)/3.
+		//log2(7./3.)/2.
+
+
+		
+		
 		//10./17.
-		//9./15.
-		//11./19.
+		//log2(11./9. * 32.)/9. // some kind of 17edo meantone
+
+		
+
+		// weird,
 		//10./16.
 		//15./26.
-		//4./7.
-		//18./31.
-		//0.6 //5edo
-		//31./53.
 	;
 	float fourth = octave-fifth;
 	float wholetone = 2.*fifth - octave;
@@ -205,6 +234,9 @@ int main(void)
 		//float leftStep=log2(4./3)/3.;
 		//float upStep=1-8*leftStep;
     
+		//float leftStep=2./12.;
+		//float upStep=-3./24.;
+
     /* Initialize library before making any other calls. */
     err = Pa_Initialize();
     if( err != paNoError ) goto error;
@@ -251,7 +283,7 @@ int main(void)
 							internalNote->lfoPhase=0;
 							internalNote->phase=0;
 							internalNote->framesPassed=0;	
-							internalNote->ring=1;
+							//internalNote->ring=0.99;
 				internalNote->volume=note->volume;
 
 							internalNote->phaseDelta=note->frequency/44100.;
