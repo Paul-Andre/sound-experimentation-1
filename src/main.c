@@ -106,12 +106,12 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
 
 					
 					// Bass sound
-					float r = (sineFunction(internalNote->lfoPhase))*0.1+0.9;//internalNote->ring;
+					float r = internalNote->ring;
 					float p = internalNote->phase;
 					float a = (0
 							
 							+sineFunction(
-								squareFunction(p)*r
+								squareFunction(p)*0.1
 								+p
 							)
 						//*squareFunction(sineFunction(p)*r)
@@ -120,7 +120,7 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
 							*0.2*internalNote->volume ;
 					
 					//a*=0.3*internalNote->volume;
-					//internalNote->ring*=0.9999;
+					internalNote->ring*=0.9999;
 
 					internalNote->framesPassed++;
 
@@ -189,10 +189,10 @@ int main(void)
 		//log2(12./7.*2)/3. //minor third = 7/5 , kinda like 22edo
 		//13./22.
 
-		710.291/1200.
+		//710.291/1200.
 
 		//log2(8.*7.)/10. //septimal meantone with Aug6 = 7/4
-		//log2(8.*7./5.)/6. //septimal meantone with Aug4 = 7/5
+		log2(8.*7./5.)/6. //septimal meantone with Aug4 = 7/5
 		//log2(32.*7./6.)/9. //septimal meantone with dim2 = 7/6
 		
 		//18./31.  // 31 is pretty much in the same spirit (not all notes are covered)
