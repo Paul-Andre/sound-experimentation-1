@@ -111,7 +111,7 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
 					float a = (0
 							
 							+sineFunction(
-								squareFunction(p)*0.1
+								sawFunction(p)*0.1*r
 								+p
 							)
 						//*squareFunction(sineFunction(p)*r)
@@ -187,12 +187,12 @@ int main(void)
 		
 
 		//log2(12./7.*2)/3. //minor third = 7/5 , kinda like 22edo
-		//13./22.
+		13./22.
 
 		//710.291/1200.
 
 		//log2(8.*7.)/10. //septimal meantone with Aug6 = 7/4
-		log2(8.*7./5.)/6. //septimal meantone with Aug4 = 7/5
+		//log2(8.*7./5.)/6. //septimal meantone with Aug4 = 7/5
 		//log2(32.*7./6.)/9. //septimal meantone with dim2 = 7/6
 		
 		//18./31.  // 31 is pretty much in the same spirit (not all notes are covered)
@@ -278,7 +278,7 @@ int main(void)
 							note->keyPressed=optKey.position;
 							note->on=1;
 							note->frequency=exp2((note->keyPressed.x-5)*leftStep
-									+(note->keyPressed.y-1)*upStep)*110;
+									+(note->keyPressed.y-1)*upStep)*440;
 							note->volume=1;
 							internalNote->lfoPhase=0;
 							internalNote->phase=0;
