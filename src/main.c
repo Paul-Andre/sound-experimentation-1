@@ -114,9 +114,12 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
 					// Bass sound
 					float r = internalNote->ring;
 					float p = internalNote->phase;
-					float a = sawFunction(p+sineFunction(p))
+					float a = (
+							sawFunction(p+sineFunction(p))
+							+ sawFunction(2*p)
+							)
 
-							*0.2*internalNote->volume ;
+							*0.1*internalNote->volume ;
 					
 					//a*=0.3*internalNote->volume;
 					internalNote->ring*=0.9999;

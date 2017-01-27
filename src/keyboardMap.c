@@ -9,6 +9,9 @@ OptionalKeyPosition mapScancode(SDL_Scancode s){
 	}
 	else {
 		switch(s){
+			case SDL_SCANCODE_LSHIFT: case SDL_SCANCODE_NONUSBACKSLASH:
+				k=(KeyPosition){-1,0};
+			break;	
 			case SDL_SCANCODE_Z:
 				k=(KeyPosition){0,0};
 			break;	
@@ -38,6 +41,9 @@ OptionalKeyPosition mapScancode(SDL_Scancode s){
 			break;	
 			case SDL_SCANCODE_SLASH:
 				k=(KeyPosition){9,0};
+			break;	
+			case SDL_SCANCODE_RSHIFT:
+				k=(KeyPosition){10,0};
 			break;	
 			
 			
@@ -121,6 +127,9 @@ OptionalKeyPosition mapScancode(SDL_Scancode s){
 			break;
 			case SDL_SCANCODE_EQUALS:
 				k=(KeyPosition){11,3};
+			break;
+			case SDL_SCANCODE_BACKSPACE:
+				k=(KeyPosition){12,3};
 			break;
 			
 			
